@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MLB TRACKER · All Teams</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">MLB <span>TRACKER</span></div>
+      <button class="back-btn" id="back-btn" onclick="showTeams()">
+        ← 팀 목록
+      </button>
+    </header>
+
+    <!-- 팀 목록 화면 -->
+    <div id="screen-teams">
+      <div class="page-title">MLB TEAMS</div>
+      <div class="page-sub">
+        30개 구단 · 팀을 선택하면 상세 정보를 확인할 수 있습니다
+      </div>
+      <div id="teams-container">
+        <div class="loading">
+          <div class="spinner"></div>
+          <div class="loading-txt">팀 정보 불러오는 중</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 팀 상세 화면 -->
+    <div id="screen-detail">
+      <div class="team-hero">
+        <div class="hero-info">
+          <div class="hero-city" id="hero-city"></div>
+          <div class="hero-name" id="hero-name"></div>
+          <div class="hero-meta" id="hero-meta"></div>
+        </div>
+        <div class="hero-abbr" id="hero-abbr"></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-box-num green" id="d-wins">—</div>
+          <div class="stat-box-label">승</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-num red" id="d-losses">—</div>
+          <div class="stat-box-label">패</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-num gold" id="d-pct">—</div>
+          <div class="stat-box-label">승률</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-num blue" id="d-rank">—</div>
+          <div class="stat-box-label">지구 순위</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-num" id="d-gb" style="color: var(--gray)">—</div>
+          <div class="stat-box-label">GB</div>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('results')">
+          최근 경기
+        </button>
+        <button class="tab-btn" onclick="switchTab('schedule')">
+          앞으로 일정
+        </button>
+        <button class="tab-btn" onclick="switchTab('standings')">
+          지구 순위
+        </button>
+      </div>
+
+      <div class="tab-panel active" id="tab-results">
+        <div class="loading">
+          <div class="spinner"></div>
+          <div class="loading-txt">로딩 중</div>
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-schedule">
+        <div class="loading">
+          <div class="spinner"></div>
+          <div class="loading-txt">로딩 중</div>
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-standings">
+        <div class="loading">
+          <div class="spinner"></div>
+          <div class="loading-txt">로딩 중</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
