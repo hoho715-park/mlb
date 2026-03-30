@@ -352,6 +352,13 @@ header {
   text-align: center;
   letter-spacing: 1px;
 }
+.g-opp-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .g-opp {
   flex: 1;
 }

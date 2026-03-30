@@ -184,12 +184,14 @@ async function loadResults(teamId) {
       const oppSc   = opp.score ?? 0;
       const win     = mySc > oppSc;
       const oppAbbr = getTeamAbbr(opp.team);
+      const oppId   = opp.team.id;
       if (win) wins++; else losses++;
 
       html += `
         <div class="game-row">
           <div class="g-date">${fmtDate(g.gameDate)}</div>
           <div class="g-loc">${isHome ? 'vs' : '@'}</div>
+          <img class="g-opp-logo" src="${teamLogoUrl(oppId)}" alt="${oppAbbr}">
           <div class="g-opp">
             <div class="g-opp-abbr">${oppAbbr}</div>
             <div class="g-opp-ko">${TEAM_KO[oppAbbr] || oppAbbr}</div>
@@ -235,11 +237,13 @@ async function loadSchedule(teamId) {
       const isHome  = g.teams.home.team.id === teamId;
       const opp     = isHome ? g.teams.away.team : g.teams.home.team;
       const oppAbbr = getTeamAbbr(opp);
+      const oppId   = opp.id;
 
       html += `
         <div class="game-row">
           <div class="g-date">${fmtDate(g.gameDate)}</div>
           <div class="g-loc">${isHome ? 'vs' : '@'}</div>
+          <img class="g-opp-logo" src="${teamLogoUrl(oppId)}" alt="${oppAbbr}">
           <div class="g-opp">
             <div class="g-opp-abbr">${oppAbbr}</div>
             <div class="g-opp-ko">${TEAM_KO[oppAbbr] || oppAbbr} · ${fmtTime(g.gameDate)} KST</div>
