@@ -70,6 +70,19 @@ const TEAM_KO = {
   SD:'파드리스',     SF:'자이언츠',
 };
 
+/* ── 팀 ID → 약어 매핑 ── */
+const TEAM_ID_TO_ABBR = {};
+for (const league of LEAGUES) {
+  for (const div of league.divisions) {
+    for (const t of div.teams) {
+      TEAM_ID_TO_ABBR[t.id] = t.abbr;
+    }
+  }
+}
+
+/* ── 팀 약어 가져오기 (API 응답 또는 매핑에서) ── */
+const getTeamAbbr = (team) => team.abbreviation || TEAM_ID_TO_ABBR[team.id] || team.teamName || 'UNK';
+
 /* ── 유틸 ── */
 const today  = ()  => new Date().toISOString().slice(0, 10);
 const offset = (d) => { const dt = new Date(); dt.setDate(dt.getDate() + d); return dt.toISOString().slice(0, 10); };
@@ -170,7 +183,7 @@ async function loadResults(teamId) {
       const mySc    = my.score  ?? 0;
       const oppSc   = opp.score ?? 0;
       const win     = mySc > oppSc;
-      const oppAbbr = opp.team.abbreviation;
+      const oppAbbr = getTeamAbbr(opp.team);
       if (win) wins++; else losses++;
 
       html += `
@@ -221,7 +234,7 @@ async function loadSchedule(teamId) {
     for (const g of games.slice(0, 20)) {
       const isHome  = g.teams.home.team.id === teamId;
       const opp     = isHome ? g.teams.away.team : g.teams.home.team;
-      const oppAbbr = opp.abbreviation;
+      const oppAbbr = getTeamAbbr(opp);
 
       html += `
         <div class="game-row">
