@@ -110,7 +110,7 @@ async function getStandings() {
 
 /* ── 팀 목록 렌더 ── */
 function renderTeams() {
-  let html = '';
+  let html = '<div class="leagues-container">';
   for (const league of LEAGUES) {
     html += `<div class="league-block"><div class="league-label">${league.name}</div>`;
     for (const div of league.divisions) {
@@ -119,7 +119,7 @@ function renderTeams() {
         html += `
           <div class="team-card" onclick="loadTeam(${t.id},'${t.abbr}','${t.city}','${t.name}','${div.name}')">
             <img class="team-logo" src="${teamLogoUrl(t.id)}" alt="${t.name}" onerror="this.style.display='none'">
-            <div>
+            <div class="team-info">
               <div class="team-name-small">${t.name}</div>
               <div class="team-city">${t.city}</div>
             </div>
@@ -129,6 +129,7 @@ function renderTeams() {
     }
     html += `</div>`;
   }
+  html += '</div>';
   document.getElementById('teams-container').innerHTML = html;
 }
 
