@@ -82,6 +82,7 @@ header {
   font-size: 38px;
   letter-spacing: 3px;
   margin-bottom: 6px;
+  text-align: center;
 }
 .page-sub {
   font-family: "Barlow Condensed", sans-serif;
@@ -90,15 +91,19 @@ header {
   color: var(--gray);
   margin-bottom: 36px;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .leagues-container {
   display: flex;
-  gap: 32px;
+  gap: 48px;
+  justify-content: center;
 }
 
 .league-block {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .league-label {
   font-family: "Bebas Neue", sans-serif;
@@ -108,10 +113,15 @@ header {
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
   margin-bottom: 16px;
+  text-align: center;
+  width: 100%;
 }
 
 .division-block {
   margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .division-label {
   font-family: "Barlow Condensed", sans-serif;
@@ -121,11 +131,13 @@ header {
   color: var(--dim);
   text-transform: uppercase;
   margin-bottom: 8px;
+  text-align: center;
 }
 
 .team-grid {
   display: flex;
   gap: 8px;
+  justify-content: center;
 }
 
 .team-card {
