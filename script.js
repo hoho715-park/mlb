@@ -162,10 +162,10 @@ async function loadTeam(id, abbr, city, name, divName) {
 async function loadResults(teamId) {
   const panel = document.getElementById('tab-results');
   try {
-    // 올해 경기만 가져오기 (1월 1일부터 오늘까지)
+    // 2026 시즌 개막일(KST 3월 26일, UTC 3월 25일)부터 오늘까지
     const year = currentYear();
-    const startOfYear = `${year}-01-01`;
-    const data  = await getSchedule(teamId, startOfYear, today());
+    const seasonStart = `${year}-03-25`;
+    const data  = await getSchedule(teamId, seasonStart, today());
     const games = [];
     for (const d of (data.dates || []).reverse())
       for (const g of d.games)
