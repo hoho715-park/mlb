@@ -397,12 +397,42 @@ header {
 }
 
 .g-opp {
-  flex: 1;
+  min-width: 100px;
 }
 .g-opp-abbr {
   font-family: "Bebas Neue", sans-serif;
   font-size: 20px;
   letter-spacing: 2px;
+}
+
+.g-venue {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 11px;
+  color: var(--dim);
+  min-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.g-pitchers {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 180px;
+}
+.pitcher-label {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.pitcher-vs {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 12px;
+  color: var(--gray);
 }
 .g-opp-ko {
   font-family: "Barlow Condensed", sans-serif;
