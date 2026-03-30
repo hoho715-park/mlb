@@ -475,6 +475,17 @@ table.std td:nth-child(2) {
   color: var(--white);
   font-weight: 600;
 }
+.std-team-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.std-team-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
 table.std tr.me td {
   background: rgba(0, 168, 232, 0.06);
   color: var(--accent);

@@ -70,12 +70,14 @@ const TEAM_KO = {
   SD:'파드리스',     SF:'자이언츠',
 };
 
-/* ── 팀 ID → 약어 매핑 ── */
+/* ── 팀 ID → 팀 정보 매핑 ── */
 const TEAM_ID_TO_ABBR = {};
+const TEAM_ID_TO_INFO = {};
 for (const league of LEAGUES) {
   for (const div of league.divisions) {
     for (const t of div.teams) {
       TEAM_ID_TO_ABBR[t.id] = t.abbr;
+      TEAM_ID_TO_INFO[t.id] = t;
     }
   }
 }
@@ -293,12 +295,20 @@ async function loadStandings(teamId, divName) {
 
     for (const tr of myDiv.teamRecords || []) {
       const isMe = tr.team.id === teamId;
-      const abbr = tr.team.abbreviation;
+      const teamInfo = TEAM_ID_TO_INFO[tr.team.id] || {};
+      const abbr = teamInfo.abbr || tr.team.abbreviation || '';
+      const teamName = teamInfo.name || tr.team.teamName || tr.team.name || '';
       const gb   = tr.gamesBack === '-' ? '—' : tr.gamesBack;
       html += `
         <tr class="${isMe ? 'me' : ''}">
           <td>${tr.divisionRank}</td>
-          <td>${isMe ? '▶ ' : ''}${tr.team.teamName}<span class="std-team-ko">${TEAM_KO[abbr] || ''}</span></td>
+          <td class="std-team-cell">
+            <img class="std-team-logo" src="${teamLogoUrl(tr.team.id)}" alt="${abbr}">
+            <div>
+              ${isMe ? '▶ ' : ''}${teamName}
+              <span class="std-team-ko">${TEAM_KO[abbr] || ''}</span>
+            </div>
+          </td>
           <td>${tr.wins}</td>
           <td>${tr.losses}</td>
           <td>${tr.winningPercentage}</td>
