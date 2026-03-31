@@ -538,7 +538,10 @@ async function loadResults(teamId) {
 async function loadSchedule(teamId) {
   const panel = document.getElementById('tab-schedule');
   try {
-    const data  = await getSchedule(teamId, today(), offset(30));
+    // 시즌 끝(10월 초)까지 모든 일정 조회
+    const year = currentYear();
+    const seasonEnd = `${year}-10-05`;
+    const data  = await getSchedule(teamId, today(), seasonEnd);
     const games = [];
     for (const d of data.dates || [])
       for (const g of d.games)
@@ -548,7 +551,7 @@ async function loadSchedule(teamId) {
     if (!games.length) { panel.innerHTML = '<div class="empty">예정된 경기가 없습니다</div>'; return; }
 
     let html = '<div class="game-list">';
-    for (const g of games.slice(0, 20)) {
+    for (const g of games) {
       const isHome  = g.teams.home.team.id === teamId;
       const opp     = isHome ? g.teams.away.team : g.teams.home.team;
       const oppAbbr = getTeamAbbr(opp);
