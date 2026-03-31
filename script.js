@@ -534,6 +534,13 @@ async function loadResults(teamId) {
   }
 }
 
+/* ── 월 이름 (한국어) ── */
+const MONTH_NAMES = ['', '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+
+/* ── 일정 월 네비게이션 상태 ── */
+let scheduleMonths = [];
+let currentScheduleMonthIdx = 0;
+
 /* ── 앞으로 일정 ── */
 async function loadSchedule(teamId) {
   const panel = document.getElementById('tab-schedule');
@@ -550,31 +557,96 @@ async function loadSchedule(teamId) {
 
     if (!games.length) { panel.innerHTML = '<div class="empty">예정된 경기가 없습니다</div>'; return; }
 
-    let html = '<div class="game-list">';
+    // 월별로 그룹화
+    const gamesByMonth = {};
     for (const g of games) {
-      const isHome  = g.teams.home.team.id === teamId;
-      const opp     = isHome ? g.teams.away.team : g.teams.home.team;
-      const oppAbbr = getTeamAbbr(opp);
-      const oppId   = opp.id;
-
-      html += `
-        <div class="game-row">
-          <div class="g-date">${fmtDate(g.gameDate)}</div>
-          <div class="g-loc">${isHome ? 'vs' : '@'}</div>
-          <img class="g-opp-logo" src="${teamLogoUrl(oppId)}" alt="${oppAbbr}">
-          <div class="g-opp">
-            <div class="g-opp-abbr">${oppAbbr}</div>
-            <div class="g-opp-ko">${TEAM_KO[oppAbbr] || oppAbbr} · ${fmtTime(g.gameDate)} KST</div>
-          </div>
-          <div class="g-tag">${isHome ? '홈' : '원정'}</div>
-        </div>`;
+      const date = new Date(g.gameDate);
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      if (!gamesByMonth[monthKey]) gamesByMonth[monthKey] = [];
+      gamesByMonth[monthKey].push(g);
     }
+
+    // 월 목록 정렬
+    scheduleMonths = Object.keys(gamesByMonth).sort();
+    currentScheduleMonthIdx = 0;
+
+    // HTML 생성
+    let html = `
+      <div class="schedule-nav">
+        <button class="schedule-nav-btn" id="schedule-prev" onclick="changeScheduleMonth(-1)">◀</button>
+        <div class="schedule-month-label" id="schedule-month-label"></div>
+        <button class="schedule-nav-btn" id="schedule-next" onclick="changeScheduleMonth(1)">▶</button>
+      </div>
+      <div class="schedule-month-sub" id="schedule-month-sub"></div>
+      <div class="schedule-months-container">`;
+
+    for (let i = 0; i < scheduleMonths.length; i++) {
+      const monthKey = scheduleMonths[i];
+      const monthGames = gamesByMonth[monthKey];
+      html += `<div class="schedule-month-panel" data-month-idx="${i}"><div class="game-list">`;
+
+      for (const g of monthGames) {
+        const isHome  = g.teams.home.team.id === teamId;
+        const opp     = isHome ? g.teams.away.team : g.teams.home.team;
+        const oppAbbr = getTeamAbbr(opp);
+        const oppId   = opp.id;
+
+        html += `
+          <div class="game-row">
+            <div class="g-date">${fmtDate(g.gameDate)}</div>
+            <div class="g-loc">${isHome ? 'vs' : '@'}</div>
+            <img class="g-opp-logo" src="${teamLogoUrl(oppId)}" alt="${oppAbbr}">
+            <div class="g-opp">
+              <div class="g-opp-abbr">${oppAbbr}</div>
+              <div class="g-opp-ko">${TEAM_KO[oppAbbr] || oppAbbr} · ${fmtTime(g.gameDate)} KST</div>
+            </div>
+            <div class="g-tag">${isHome ? '홈' : '원정'}</div>
+          </div>`;
+      }
+
+      html += '</div></div>';
+    }
+
     html += '</div>';
     panel.innerHTML = html;
+
+    // 첫 번째 월 표시
+    updateScheduleMonthDisplay();
 
   } catch (e) {
     panel.innerHTML = `<div class="empty">로딩 실패 · ${e.message}</div>`;
   }
+}
+
+/* ── 일정 월 변경 ── */
+function changeScheduleMonth(delta) {
+  const newIdx = currentScheduleMonthIdx + delta;
+  if (newIdx < 0 || newIdx >= scheduleMonths.length) return;
+  currentScheduleMonthIdx = newIdx;
+  updateScheduleMonthDisplay();
+}
+
+/* ── 일정 월 표시 업데이트 ── */
+function updateScheduleMonthDisplay() {
+  const monthKey = scheduleMonths[currentScheduleMonthIdx];
+  const [y, m] = monthKey.split('-');
+  const monthNum = parseInt(m, 10);
+
+  // 라벨 업데이트
+  document.getElementById('schedule-month-label').textContent = `${y}년 ${MONTH_NAMES[monthNum]}`;
+
+  // 서브 라벨 (현재 위치)
+  document.getElementById('schedule-month-sub').textContent =
+    `${currentScheduleMonthIdx + 1} / ${scheduleMonths.length}`;
+
+  // 버튼 상태 업데이트
+  document.getElementById('schedule-prev').disabled = currentScheduleMonthIdx === 0;
+  document.getElementById('schedule-next').disabled = currentScheduleMonthIdx === scheduleMonths.length - 1;
+
+  // 패널 전환
+  document.querySelectorAll('.schedule-month-panel').forEach((panel, idx) => {
+    panel.classList.toggle('active', idx === currentScheduleMonthIdx);
+  });
 }
 
 /* ── 지구 순위 ── */
