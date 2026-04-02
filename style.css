@@ -717,4 +717,80 @@ table.std tr:last-child td {
     font-size: 52px;
     right: 16px;
   }
+
+  /* 게임 리스트 반응형 */
+  .game-row {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 12px;
+  }
+
+  .g-date {
+    font-size: 11px;
+    min-width: 45px;
+  }
+
+  .g-loc {
+    min-width: 24px;
+    font-size: 10px;
+  }
+
+  .g-opp-logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .g-opp {
+    min-width: 70px;
+    flex: 1;
+  }
+
+  .g-opp-abbr {
+    font-size: 16px;
+  }
+
+  .g-opp-ko {
+    font-size: 10px;
+  }
+
+  .g-venue {
+    display: none;
+  }
+
+  .g-pitchers {
+    width: 100%;
+    order: 10;
+    min-width: unset;
+  }
+
+  .pitcher-label {
+    font-size: 8px;
+  }
+
+  .pitcher-vs {
+    font-size: 11px;
+  }
+
+  .g-score {
+    min-width: 60px;
+    font-size: 20px;
+  }
+
+  .g-score .sc-opp {
+    font-size: 16px;
+  }
+
+  .g-score .sc-sep {
+    font-size: 14px;
+  }
+
+  .g-wl {
+    font-size: 9px;
+    width: 24px;
+  }
+
+  .g-tag {
+    font-size: 8px;
+    padding: 3px 8px;
+  }
 }
